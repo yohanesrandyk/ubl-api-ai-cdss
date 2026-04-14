@@ -15,7 +15,9 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+        run: |
+          docker logout
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
 
       - name: Debug
         run: |
