@@ -14,6 +14,12 @@ jobs:
         
       - name: Build Docker Image
         run: docker build -t yohanesrandyk/cdss-api:${{ github.sha }} .
+
+      - name: Debug Login
+        run: |
+          echo "Logging in as: ${{ secrets.DOCKER_USER }}"
+          # This will show the username in the GitHub Actions logs 
+          # so you can verify it's not empty or incorrect.
         
       - name: Push to Docker Hub
         run: |
