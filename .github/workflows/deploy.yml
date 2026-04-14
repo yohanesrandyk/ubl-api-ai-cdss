@@ -17,7 +17,7 @@ jobs:
       - name: Login to Docker Hub
         run: |
           docker logout
-          echo -n "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+          printf "%s" "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
       - name: Debug
         run: |
