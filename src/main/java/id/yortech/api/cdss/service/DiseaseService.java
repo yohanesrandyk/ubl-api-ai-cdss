@@ -1,10 +1,8 @@
 package id.yortech.api.cdss.service;
 
 import id.yortech.api.cdss.dto.DiseaseDTO;
-import id.yortech.api.cdss.entity.Disease;
 import id.yortech.api.cdss.mapper.DiseaseMapper;
 import id.yortech.api.cdss.repository.DiseaseRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

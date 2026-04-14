@@ -6,10 +6,26 @@ import org.springframework.stereotype.Component;
 import id.yortech.api.cdss.dto.DiseaseDTO;
 import id.yortech.api.cdss.entity.Disease;
 
-@Mapper(componentModel = "spring")
-public interface DiseaseMapper {
+@Component
+public class DiseaseMapper extends BaseMapper {
 
-	Disease toEntity(DiseaseDTO dto);
+	public Disease toEntity(DiseaseDTO dto) {
+		if (dto == null) {
+			return null;
+		}
 
-	DiseaseDTO toDto(Disease entity);
+		Disease entity = new Disease();
+		map(dto, entity);
+		return entity;
+	}
+
+	public DiseaseDTO toDto(Disease entity) {
+		if (entity == null) {
+			return null;
+		}
+
+		DiseaseDTO dto = new DiseaseDTO();
+		map(entity, dto);
+		return dto;
+	}
 }

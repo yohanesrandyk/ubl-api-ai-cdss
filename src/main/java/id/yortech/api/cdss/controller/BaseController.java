@@ -13,6 +13,11 @@ public abstract class BaseController<DTO, ID> {
 
 	protected abstract BaseService<DTO, ID> getService();
 
+	@GetMapping("/test")
+	public ResponseEntity<String> test() {
+		return ResponseEntity.ok("OK");
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<DTO> getById(@PathVariable ID id) {
 		return ResponseEntity.ok(getService().findById(id));

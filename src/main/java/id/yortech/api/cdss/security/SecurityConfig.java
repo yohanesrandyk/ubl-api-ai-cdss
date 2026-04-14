@@ -83,10 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/**").permitAll().antMatchers("/openapi/v1/test").permitAll()
-				.antMatchers("/openapi/v1/auth/token").access("hasRole('Z')").anyRequest().authenticated().and()
-				.formLogin().permitAll().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint).and()
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+		http.authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated().and().formLogin()
+				.permitAll().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint).and().logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
 				.clearAuthentication(true).deleteCookies("JSESSIONID").deleteCookies("AUTHSERVER")
 				.invalidateHttpSession(true).permitAll().and().csrf().disable();
 	}

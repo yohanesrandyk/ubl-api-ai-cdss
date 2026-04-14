@@ -1,0 +1,87 @@
+# 1. MySQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "cdss_db"
+        - name: MYSQL_USER
+          value: "cdss_user"
+        - name: MYSQL_PASSWORD
+          value: "cdss_pass"
+        ports:
+        - containerPort: 3306
+
+---
+# 2. MySQL Service (Internal access for the App)
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb # This matches your JDBC URL hostname
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+# 3. API App Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdss-api-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdss-api
+  template:
+    metadata:
+      labels:
+        app: cdss-api
+    spec:
+      containers:
+      - name: cdss-api
+        image: cdss-api:latest # Ensure this image is loaded in your k8s node
+        imagePullPolicy: Never # Use local image if using Minikube/MicroK8s
+        env:
+        - name: PRIMARY_DATASOURCE_URL
+          value: "jdbc:mysql://mysqldb:3306/cdss_db"
+        - name: PRIMARY_DATASOURCE_USERNAME
+          value: "cdss_user"
+        - name: PRIMARY_DATASOURCE_PASSWORD
+          value: "cdss_pass"
+        ports:
+        - containerPort: 8080
+
+---
+# 4. API App Service (External access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdss-api-service
+spec:
+  type: NodePort
+  selector:
+    app: cdss-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080 # This is how you access it from Ubuntu

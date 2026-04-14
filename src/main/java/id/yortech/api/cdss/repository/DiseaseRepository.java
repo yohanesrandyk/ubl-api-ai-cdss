@@ -14,15 +14,15 @@ import java.util.Optional;
 
 @Repository
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
-	Optional<Disease> findByCode(String code);
-
-	List<Disease> findByNameContainingIgnoreCase(String name);
-
-	@Query("SELECT d FROM Disease d JOIN d.symptoms s WHERE s.id = :symptomId")
-	List<Disease> findAllBySymptomId(@Param("symptomId") Long symptomId);
-
-	@Modifying
-	@Transactional
-	@Query("UPDATE Disease d SET d.description = :description WHERE d.code = :code")
-	int updateDescriptionByCode(@Param("code") String code, @Param("description") String description);
+//	Optional<Disease> findByCode(String code);
+//
+//	List<Disease> findByNameContainingIgnoreCase(String name);
+//
+//	@Query("SELECT d FROM Disease d JOIN d.symptoms s WHERE s.id = :symptomId")
+//	List<Disease> findAllBySymptomId(@Param("symptomId") Long symptomId);
+//
+//	@Modifying
+//	@Transactional
+//	@Query("UPDATE Disease d SET d.description = :description WHERE d.code = :code")
+//	int updateDescriptionByCode(@Param("code") String code, @Param("description") String description);
 }

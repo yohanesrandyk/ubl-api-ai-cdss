@@ -1,6 +1,6 @@
 package id.yortech.api.cdss;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,9 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
 @PropertySource({ "classpath:application.properties", "classpath:jdbc.properties" })
-public class Main extends SpringBootServletInitializer {
+public class Main {
 
 	@Value("${primary.datasource.driverClassName}")
 	private String driverClassName;
