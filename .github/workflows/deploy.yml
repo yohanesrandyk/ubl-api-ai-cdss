@@ -25,7 +25,7 @@ jobs:
 
   deploy-to-k8s:
     needs: build-and-push
-    runs-on: self-hosted # This would be your Ubuntu machine
+    runs-on: self-hosted
     steps:
       - name: Update K8s
         run: |
