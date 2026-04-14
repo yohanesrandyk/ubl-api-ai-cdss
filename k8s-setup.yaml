@@ -59,8 +59,8 @@ spec:
     spec:
       containers:
       - name: cdss-api
-        image: cdss-api:latest # Ensure this image is loaded in your k8s node
-        imagePullPolicy: Never # Use local image if using Minikube/MicroK8s
+        image: yohanesrandyk/cdss-api:latest
+        imagePullPolicy: Always
         env:
         - name: PRIMARY_DATASOURCE_URL
           value: "jdbc:mysql://mysqldb:3306/cdss_db"
