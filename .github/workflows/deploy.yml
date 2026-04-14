@@ -30,6 +30,12 @@ jobs:
     needs: build-and-push
     runs-on: self-hosted
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f k8s-setup.yaml
+
       - name: Update K8s Deployment
         run: |
           kubectl set image deployment/cdss-api-app \
