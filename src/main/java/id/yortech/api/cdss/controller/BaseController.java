@@ -15,7 +15,7 @@ public abstract class BaseController<DTO, ID> {
 
 	@GetMapping("/test")
 	public ResponseEntity<String> test() {
-		return ResponseEntity.ok("OK");
+		return ResponseEntity.ok("OK-1");
 	}
 
 	@GetMapping("/{id}")
