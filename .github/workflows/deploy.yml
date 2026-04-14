@@ -1,0 +1,29 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+        
+      - name: Build Docker Image
+        run: docker build -t your-docker-id/cdss-api:${{ github.sha }} .
+        
+      - name: Push to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+          docker push your-docker-id/cdss-api:${{ github.sha }}
+
+  deploy-to-k8s:
+    needs: build-and-push
+    runs-on: self-hosted # This would be your Ubuntu machine
+    steps:
+      - name: Update K8s
+        run: |
+          kubectl set image deployment/cdss-api-app cdss-api=your-docker-id/cdss-api:${{ github.sha }}
