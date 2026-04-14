@@ -20,6 +20,13 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Debug
+        run: |
+          cat ~/.docker/config.json
+          docker info | grep -i username
+          docker pull hello-world
+          echo "Image name: ${{ secrets.DOCKER_USER }}/cdss-api:${{ github.sha }}"
+
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USER }}/cdss-api:${{ github.sha }} .
 
