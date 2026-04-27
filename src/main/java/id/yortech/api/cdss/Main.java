@@ -11,30 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@PropertySource({ "classpath:application.properties", "classpath:jdbc.properties" })
 public class Main {
-
-	@Value("${primary.datasource.driverClassName}")
-	private String driverClassName;
-	@Value("${primary.datasource.username}")
-	private String username;
-	@Value("${primary.datasource.password}")
-	private String password;
-	@Value("${primary.datasource.url}")
-	private String url;
-
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
-	}
-
-	@Bean(name = "dataSource")
-	@Primary
-	public BasicDataSource DataSource() throws Exception {
-		BasicDataSource basicDataSource = new BasicDataSource();
-		basicDataSource.setDriverClassName(driverClassName);
-		basicDataSource.setUrl(url);
-		basicDataSource.setUsername(username);
-		basicDataSource.setPassword(password);
-		return basicDataSource;
 	}
 }
