@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 	@GetMapping("/")
 	public ResponseEntity<String> test() {
-		return ResponseEntity.ok("OK");
+		return ResponseEntity.ok("OK.v2");
 	}
 }

@@ -25,10 +25,6 @@ public class Disease {
 	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
-	@ManyToOne
-	@JoinColumn(name = "organ_id")
-	private Organ organ;
-
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
@@ -72,14 +68,6 @@ public class Disease {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public Organ getOrgan() {
-		return organ;
-	}
-
-	public void setOrgan(Organ organ) {
-		this.organ = organ;
 	}
 
 }

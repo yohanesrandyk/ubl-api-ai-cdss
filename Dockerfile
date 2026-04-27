@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the executable jar from the target folder to the container
 # Note: Adjust the filename if your artifactId or version differs
-COPY api-server-cdss-staging.jar app.jar
+COPY target/api-server-cdss-staging.jar app.jar
 
 # Expose the port your app runs on (default 8080)
 EXPOSE 8080

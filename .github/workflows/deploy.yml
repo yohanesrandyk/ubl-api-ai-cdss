@@ -1,4 +1,5 @@
 name: Build and Deploy
+
 on:
   push:
     branches: [ staging ]
@@ -7,23 +8,43 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Build with Maven
         run: mvn clean package -DskipTests
-        
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with: 
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
-        run: docker build -t your-docker-id/cdss-api:${{ github.sha }} .
-        
+        run: docker build -t ${{ secrets.DOCKER_USER }}/cdss-api:${{ github.sha }} .
+
       - name: Push to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
-          docker push your-docker-id/cdss-api:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USER }}/cdss-api:${{ github.sha }}
 
   deploy-to-k8s:
     needs: build-and-push
-    runs-on: self-hosted # This would be your Ubuntu machine
+    runs-on: self-hosted
     steps:
-      - name: Update K8s
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Apply Kubernetes Manifests
+        run: kubectl apply -f k8s-setup.yaml
+
+      - name: Update K8s Deployment
         run: |
-          kubectl set image deployment/cdss-api-app cdss-api=your-docker-id/cdss-api:${{ github.sha }}
+          kubectl set image deployment/cdss-api-app \
+            cdss-api=${{ secrets.DOCKER_USER }}/cdss-api:${{ github.sha }} \
+            --record
+
+      - name: Verify Rollout
+        run: kubectl rollout status deployment/cdss-api-app --timeout=120s
+
+      - name: Rollback on Failure
+        if: failure()
+        run: kubectl rollout undo deployment/cdss-api-app
